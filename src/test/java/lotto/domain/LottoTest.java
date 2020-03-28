@@ -1,5 +1,6 @@
 package lotto.domain;
 
+import lotto.exception.LottoException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,22 +13,17 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class LottoTest {
     private Lotto lotto;
+
     @BeforeEach
     void setUp() {
         lotto = new Lotto(Arrays.asList(1, 2, 3, 4, 5, 6));
     }
+
     @Test
     void lotto() {
         assertThatThrownBy(() -> new Lotto(Arrays.asList(1, 2, 3, 4, 5)))
-                .isInstanceOf(RuntimeException.class)
+                .isInstanceOf(LottoException.class)
                 .hasMessageContaining("Lotto number must be 6");
-    }
-
-    @Test
-    void getSameCount() {
-        int sameCount = lotto.getSameCount(new Lotto(Arrays.asList(1, 2, 3, 7, 8, 9)));
-
-        assertThat(sameCount).isEqualTo(3);
     }
 
     @ParameterizedTest
