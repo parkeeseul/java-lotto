@@ -33,7 +33,7 @@ public class LottoCalculatorTest {
 
     @Test
     void getWinningPercentage() {
-        LottoCalculator lottoCalculator = new LottoCalculator(lastWeekLotto, lottos);
+        LottoCalculator lottoCalculator = new LottoCalculator(new WinningLotto(lastWeekLotto, "7"), lottos);
 
         String winningPercentage = lottoCalculator.getWinningPercentage(14000).toString();
 
