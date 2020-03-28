@@ -17,22 +17,27 @@ public class LottoCalculator {
     private int rank3Count;
     @Getter
     private int rank4Count;
+    @Getter
+    private int rank5Count;
 
-    public LottoCalculator(Lotto lastWeekLotto, List<Lotto> lottos) {
+    public LottoCalculator(WinningLotto winningLotto, List<Lotto> lottos) {
         for (Lotto lotto : lottos) {
-            RankType rankType = RankType.getRank(lotto.getSameCount(lastWeekLotto));
+            RankType rankType = RankType.getRank(winningLotto.getMatchCount(lotto), winningLotto.matchBonus(lotto));
 
             addRankCount(rankType);
         }
     }
 
     public BigDecimal getWinningPercentage(int investment) {
-        int totalReward = RankType.RANK1.totalReward(rank1Count) +
+        return new BigDecimal(getTotalReward()).divide(new BigDecimal(investment), new MathContext(2, RoundingMode.DOWN));
+    }
+
+    private int getTotalReward() {
+        return RankType.RANK1.totalReward(rank1Count) +
                 RankType.RANK2.totalReward(rank2Count) +
                 RankType.RANK3.totalReward(rank3Count) +
-                RankType.RANK4.totalReward(rank4Count);
-
-        return new BigDecimal(totalReward).divide(new BigDecimal(investment), new MathContext(2, RoundingMode.DOWN));
+                RankType.RANK4.totalReward(rank4Count) +
+                RankType.RANK5.totalReward(rank5Count);
     }
 
     private void addRankCount(RankType rankType) {
@@ -50,6 +55,10 @@ public class LottoCalculator {
 
         if (rankType == RankType.RANK4) {
             rank4Count++;
+        }
+
+        if (rankType == RankType.RANK5) {
+            rank5Count++;
         }
     }
 }

@@ -1,6 +1,8 @@
 package lotto.domain;
 
 import lombok.Getter;
+import lotto.exception.LottoException;
+import lotto.type.ExceptionType;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,24 +24,12 @@ public class Lotto {
 
     Lotto(List<Integer> numbers) {
         if (numbers.size() != LOTTO_COUNT) {
-            throw new RuntimeException("Lotto number must be 6");
+            throw new LottoException(ExceptionType.INVALID_LOTTO_NUMBER);
         }
 
         Collections.sort(numbers);
 
         this.numbers = numbers;
-    }
-
-    public int getSameCount(Lotto lotto) {
-        int sameCount = 0;
-
-        for (Integer number : numbers) {
-            if (lotto.contains(number)) {
-                sameCount++;
-            }
-        }
-
-        return sameCount;
     }
 
     public boolean contains(int number) {
